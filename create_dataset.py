@@ -1,7 +1,7 @@
 '''
 CS5100 Foundations of Artificial Intelligence
 Project
-Author: Arun Madhusudhanana, Tejaswini Dilip Deore
+Author: Arun Madhusudhanan, Tejaswini Dilip Deore
 
 This script is used to create a dataset class for the Flickr8k dataset. The dataset class is used to create a train and test dataloader.
 
@@ -58,9 +58,9 @@ class FlickrDataset(torch.utils.data.Dataset):
         tokens = self.tokenizer.encode(caption).ids
         caption_tokens = torch.tensor(tokens)
         
+        # Get the resnet features
         res_features = self.resnet_features[self.df.iloc[idx, 0]]
         res_features = torch.tensor(res_features.squeeze())      
-
        
         return img, caption_tokens, self.df.iloc[idx, 0], res_features
     
@@ -85,61 +85,6 @@ def collate_fn(batch, pad_idx = 0, batch_first = True):
     image_names = [item[2] for item in batch]
     resnet_features = [item[3] for item in batch]
     resnet_features = torch.stack(resnet_features)
-    captions = pad_sequence(captions, batch_first=batch_first, padding_value=pad_idx)
+    captions = pad_sequence(captions, batch_first=batch_first, padding_value=pad_idx) 
     return images, captions, image_names, resnet_features
-
-
-# def load_coco_data(base_dir,
-#                    max_train=None,
-#                    pca_features=True):
-#     data = {}
-#     caption_file = os.path.join(base_dir, 'coco2014_captions.h5')
-#     with h5py.File(caption_file, 'r') as f:
-#         for k, v in f.items():
-#             data[k] = np.asarray(v)
-
-#     if pca_features:
-#         train_feat_file = os.path.join(base_dir, 'train2014_vgg16_fc7_pca.h5')
-#     else:
-#         train_feat_file = os.path.join(base_dir, 'train2014_vgg16_fc7.h5')
-#     with h5py.File(train_feat_file, 'r') as f:
-#         data['train_features'] = np.asarray(f['features'])
-
-#     if pca_features:
-#         val_feat_file = os.path.join(base_dir, 'val2014_vgg16_fc7_pca.h5')
-#     else:
-#         val_feat_file = os.path.join(base_dir, 'val2014_vgg16_fc7.h5')
-#     with h5py.File(val_feat_file, 'r') as f:
-#         data['val_features'] = np.asarray(f['features'])
-
-#     dict_file = os.path.join(base_dir, 'coco2014_vocab.json')
-#     with open(dict_file, 'r') as f:
-#         dict_data = json.load(f)
-#         for k, v in dict_data.items():
-#             data[k] = v
-
-#     train_url_file = os.path.join(base_dir, 'train2014_urls.txt')
-#     with open(train_url_file, 'r') as f:
-#         train_urls = np.asarray([line.strip() for line in f])
-#     data['train_urls'] = train_urls
-
-#     val_url_file = os.path.join(base_dir, 'val2014_urls.txt')
-#     with open(val_url_file, 'r') as f:
-#         val_urls = np.asarray([line.strip() for line in f])
-#     data['val_urls'] = val_urls
-
-#     # Maybe subsample the training data
-#     if max_train is not None:
-#         num_train = data['train_captions'].shape[0]
-#         mask = np.random.randint(num_train, size=max_train)
-#         data['train_captions'] = data['train_captions'][mask]
-#         data['train_image_idxs'] = data['train_image_idxs'][mask]
-
-#     return data
-
-# class MSCOCODataset(torch.utils.Dataset):
-#     def __init__(self, data):
-#         self.data = data
-
-
         

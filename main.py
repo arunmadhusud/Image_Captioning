@@ -1,7 +1,7 @@
 '''
 CS5100 Foundations of Artificial Intelligence
 Project
-Author: Arun Madhusudhanana, Tejaswini Dilip Deore
+Author: Arun Madhusudhanan, Tejaswini Dilip Deore
 
 - This script is used to write the main code for the project. 
 - The main code is used to train the model, validate the model and test the model. 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     validation_losses = []
     best_loss = float('inf')
    
-    # Compute metric scores
+    # Compute metric scores 
     avg_bleu_1_scores_greedy = []
     avg_bleu_2_scores_greedy = []
     avg_rouge1_scores_greedy = []

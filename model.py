@@ -1,7 +1,7 @@
 '''
 CS5100 Foundations of Artificial Intelligence
 Project
-Author: Arun Madhusudhanana, Tejaswini Dilip Deore
+Author: Arun Madhusudhanan, Tejaswini Dilip Deore
 
 This script is used to create the model for the image captioning task. 
 '''
@@ -25,10 +25,12 @@ class ResNet(nn.Module):
         for param in resnet.parameters():
             param.requires_grad_(False) 
         
+        # Extract all layers except the last one 
         modules = list(resnet.children())[:-1]
-        self.resnet = nn.Sequential(*modules)        
+        self.resnet = nn.Sequential(*modules)      
 
     def forward(self, images):
+        # forward pass to get the image features
         features = self.resnet(images)
         features = features.view(features.size(0), -1)    
         return features
@@ -39,7 +41,7 @@ class EncoderCNN(nn.Module):
     Class to create the EncoderCNN model.
     '''
     def __init__(self, embed_size):
-        super(EncoderCNN, self).__init__()
+        super(EncoderCNN, self).__init__() 
         self.embed = nn.Linear(2048, embed_size)
 
     def forward(self, image_features):
@@ -52,13 +54,16 @@ class DecoderRNN(nn.Module):
     '''
     def __init__(self, embed_size, hidden_size, vocab_size, num_layers=1,dropout=0.5):
         super(DecoderRNN, self).__init__()
+        # Embedding layer to convert the input to the corresponding embedding
         self.embed = nn.Embedding(vocab_size, embed_size)
+        # LSTM layer to generate the captions from the embeddings
         self.lstm = nn.LSTM(embed_size, hidden_size, num_layers, batch_first=True, dropout=dropout)
         self.linear = nn.Linear(hidden_size, vocab_size)
         self.dropout = nn.Dropout(dropout)
     
     def forward(self, features, captions):
-        embeddings = self.embed(captions[:,:-1])
+        # get embeddings from the input captions
+        embeddings = self.embed(captions[:,:-1]) 
         # print(embeddings.shape)
         embeddings = torch.cat((features.unsqueeze(1), embeddings), 1)
         lstm_out, _ = self.lstm(embeddings)
@@ -78,8 +83,8 @@ class DecoderRNN(nn.Module):
             output (str): The sampled caption
         '''
         output = []
-        for i in range(max_len):
-            lstm_out, hidden = self.lstm(inputs, hidden)
+        for i in range(max_len): 
+            lstm_out, hidden = self.lstm(inputs, hidden) # LSTM forward pass
             outputs = self.linear(lstm_out)
             outputs = outputs.view(inputs.size(0), -1)
 
@@ -146,7 +151,9 @@ class CaptioningModel(nn.Module):
         self.decoder = DecoderRNN(embed_size, hidden_size, vocab_size, num_layers, dropout)
     
     def forward(self, image_features, captions):
+        # get the image features from the encoder
         features = self.encoder(image_features)
+        # get the captions from the decoder
         outputs = self.decoder(features, captions)
         return outputs
     

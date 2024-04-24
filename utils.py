@@ -1,7 +1,7 @@
 '''
 CS5100 Foundations of Artificial Intelligence
 Project
-Author: Arun Madhusudhanana, Tejaswini Dilip Deore
+Author: Arun Madhusudhanan, Tejaswini Dilip Deore
 
 This file contains utility functions that are used in the training and testing of the model. 
 
