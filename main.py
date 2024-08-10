@@ -89,7 +89,7 @@ if __name__ == "__main__":
     num_layers = 2
     dropout = 0.5
     learning_rate = 3e-4
-    num_epochs = 1
+    num_epochs = 30
 
     model = CaptioningModel(embed_size, hidden_size, vocab_size, num_layers, dropout).to(device)
     criterion = nn.CrossEntropyLoss(ignore_index=tokenizer.token_to_id("<PAD>"))

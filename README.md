@@ -1,6 +1,6 @@
 # Project Description
 
-This repository contains the code for project 'Image Caption Generator' completed as the final project for course 'CS5100: Foundations of Artificial Intelligence'. 
+<!-- This repository contains the code for project 'Image Caption Generator' completed as the final project for course 'CS5100: Foundations of Artificial Intelligence'.  -->
 
 Contributors : Arun Madhusudhanan, Tejaswini Dilip Deore.
 
